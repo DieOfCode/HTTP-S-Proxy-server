@@ -44,7 +44,7 @@ class ProxyServer:
 
     def parse_data(self, client_data):
         try:
-            port = 443 if re.search(self.port_regex, str(client_data)).group("port") else 80
+            port = 443 if str(client_data.split()[0] != "GET") else 80
             web_server = re.search(self.port_regex, str(client_data)).group("address")
             request_kind = re.search(self.port_regex, str(client_data)).group("type")
             return port, request_kind, web_server
@@ -63,7 +63,7 @@ class ProxyServer:
             else:
                 response = b"HTTP/1.1 404 Not Found\r\nProxy-Agent: myProxyServer\r\n\r\nYour Website not Found\r\n"
                 client.send(response)
-        except requests.exceptions as error:
+        except Exception as error:
             print(error)
             return
 
