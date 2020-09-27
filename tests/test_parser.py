@@ -1,12 +1,12 @@
 from collections import namedtuple
 import unittest
 
-from proxy_server.proxy import Proxy
+from proxy_server.proxy import ProxyServer
 
 
 class TestParser(unittest.TestCase):
     def setUp(self) -> None:
-        self.test_proxy = Proxy()
+        self.test_proxy = ProxyServer()
         request = namedtuple("Request", ["body", "host", "port", "request_kind"])
         self.request_list = [
             request(body=b'GET http://static.kremlin.ru/media/events/highlight-images/index'
@@ -29,7 +29,6 @@ class TestParser(unittest.TestCase):
                     )]
 
     def test_parse_request(self):
-        # for element in self.request_list:
         for element in self.request_list:
             self.assertEqual((self.test_proxy.parse_data(element.body)),
                              (element.port, element.request_kind, element.host))
