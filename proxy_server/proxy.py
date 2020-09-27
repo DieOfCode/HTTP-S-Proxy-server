@@ -44,7 +44,9 @@ class ProxyServer:
 
     def parse_data(self, client_data):
         try:
-            port = 443 if str(client_data.split()[0] != "GET") else 80
+            print(str(client_data.split()[0]))
+            port = 443 if client_data.split()[0] != b"GET" else 80
+            print(port)
             web_server = re.search(self.port_regex, str(client_data)).group("address")
             request_kind = re.search(self.port_regex, str(client_data)).group("type")
             return port, request_kind, web_server
